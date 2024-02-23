@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descripción de Imágenes Estadísticas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+
+<body
+    
+    <p><h1>Descripción de Imágenes con Gráficos Estadísticos</h1></p>
+    <p><h1>en Lenguaje Natural</h1></p>
+
+    <div class="container">
+        <div class="row">
+            <h2>Seleccione una imagen estadística</h2>
+
+            <p>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul>
+                        {% for message in messages %}
+                            <li>{{ message }}</li>
+                        {% endfor %}
+                        </ul>    
+                    {% endif %}
+                {% endwith %}
+            </p>
+        
+
+            {% if filename %}
+            <div>
+                <img src="{{ url_for('display_image', filename=filename) }}" class="imagen_estadistica">
+            </div>
+            {% endif %}
+            {% if descripcion %}
+            <p class="descripcion">{{ descripcion }}</p>
+            {% endif %}
+            
+            <div>
+                <button title="Reproduce la descripción generada automáticamente" id="play" class="btn_play">Reproducir</button>
+                <button title="Pausar la descripción generada automáticamente" id="pause" class="btn_pause" style="display: none;">Pausar</button>
+                <script>
+                    let play = document.getElementById("play");
+                    let pause = document.getElementById("pause");
+            
+                    let audio = new Audio("{{ url_for('static', filename='images/description.mp3') }}");
+            
+                    function playMusic() {
+                        audio.play();
+                        play.style.display = "none";
+                        pause.style.display = "inline-block";
+                    }
+            
+                    function pauseMusic() {
+                        audio.pause();
+                        play.style.display = "inline-block";
+                        pause.style.display = "none";
+                    }
+            
+                    play.addEventListener("click", playMusic);
+                    pause.addEventListener("click", pauseMusic);
+                </script>
+            </div>
+            
+
+            <div>
+                <form method="post" action="/" enctype="multipart/form-data">
+                    <label for="method">Seleccione el modelo que desea utilizar:</label>
+                    <select name="method" id="method">
+                        <option value="description">Consumido (description)</option>
+                        <option value="experiment">Propio (experiment)</option>
+                    </select>
+                    <br><br>
+                    <d1>
+                        <p>
+                            <input type="file" name="file" class="form-control" autocomplete="off" required>
+                        </p>
+                    </d1>
+                    <br>
+                    <p class="btn_cargar">
+                        <input title="Carga la imagen" type="submit" value="Cargar" class="btn" >
+                    </p>
+                </form>
+            </div>
+            <div>
+                <p> BY: 17JDSM </p>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="chatbox">
+            <div class="chatbox__support">
+                <div class="chatbox__header">
+                    <div class="chatbox__image--header">
+                        <img src="https://cdn.icon-icons.com/icons2/39/PNG/96/kdmmaleuser_user_person_man_5919.png" alt="image" class="icono">
+                    </div>
+                    <div class="chatbox__content--header">
+                        <h4 class="chatbox__heading--header">Chat de asistencia</h4>
+                        <p class="chatbox__description--header">Hola. Me llamo David. Escribe algo</p>
+                    </div>
+                </div>
+                <div class="chatbox__messages">
+                    <div></div>
+                </div>
+                <div class="chatbox__footer">
+                    <input type="text" placeholder="Escribe un mensaje...">
+                    <button class="chatbox__send--footer send__button">Enviar</button>
+                </div>
+            </div>
+            <div class="chatbox__button">
+                <button><img src="{{ url_for('static', filename='images/chatbox-icon.svg') }}" /></button>
+            </div>
+        </div>      
+    </div>
+
+    <script>
+        $SCRIPT_ROOT = '{{ request.script_root|tojson|safe }}';
+    </script>    
+    <script type="text/javascript" src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>
